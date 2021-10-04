@@ -59,8 +59,8 @@ jobs:
             SECRET=$(az keyvault secret show --vault-name ${{ steps.creds.outputs.clusterName }}-${{ secrets.APP }} -n $SECRETNAME --query "value" -o tsv)
             echo ${SECRETNAME}=${SECRET} >>secrets.env
           done
-          kubectl create secret generic ${{ secrets.APP }} --type=Opaque --from-env-file=secrets.env --dry-run -o yaml > secrets.yml
+          kubectl create secret generic ${{ secrets.APP }} --type=Opaque --from-env-file=secrets.env --dry-run -o yaml > secrets.yaml
           kubectl apply -f ./secrets.yaml
           rm secrets.env
-          rm secrets.yml
+          rm secrets.yaml
             
