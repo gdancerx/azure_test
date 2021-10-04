@@ -42,3 +42,10 @@ jobs:
           echo "::set-output name=registryServer::$(az acr list --query '[].loginServer' -o tsv | head -1)"
           echo "::set-output name=registryUsername::${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}"
           echo "::set-output name=registryPassword::${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}"
+          
+      - name: Login to kubectl
+        uses: azure/aks-set-context@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          resource-group: ${{ steps.creds.outputs.resourceGroupName }}
+          cluster-name: ${{ steps.creds.outputs.clusterName }}
