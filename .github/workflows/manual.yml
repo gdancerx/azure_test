@@ -50,7 +50,7 @@ jobs:
           resource-group: ${{ steps.creds.outputs.resourceGroupName }}
           cluster-name: ${{ steps.creds.outputs.clusterName }}
           
-      - name: Get secrets
+      - name: Get secrets from Azure Keyvault
         run: |
           echo -ne > secrets.env
           SECRETS+=($(az keyvault secret list --vault-name ${{ steps.creds.outputs.clusterName }}-${{ secrets.APP }} --query "[].id" -o tsv))
@@ -64,6 +64,9 @@ jobs:
         run: |
           kubectl create secret generic ${{ secrets.APP }} --type=Opaque --from-env-file=secrets.env --dry-run -o yaml > secrets.yaml
           kubectl apply -f ./secrets.yaml
+          
+      - name: Cleanup
+        run: |
           rm secrets.env
           rm secrets.yaml
             
