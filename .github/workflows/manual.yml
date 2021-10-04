@@ -59,6 +59,7 @@ jobs:
             SECRET=$(az keyvault secret show --vault-name ${{ steps.creds.outputs.clusterName }}-${{ secrets.APP }} -n $SECRETNAME --query "value" -o tsv)
             echo ${SECRETNAME}=${SECRET} >>secrets.env
           done
+          ls -l
           cat secrets.env
           rm secrets.env
             
