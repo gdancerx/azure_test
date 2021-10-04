@@ -31,3 +31,14 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Get credentials and constants
+        id: creds
+        run: |
+          az aks list -o table
+          az acr list -o table
+          echo "::set-output name=clusterName::$(az aks list --query '[].name' -o tsv | head -1)"
+          echo "::set-output name=resourceGroupName::$(az aks list --query '[].resourceGroup' -o tsv | head -1)"
+          echo "::set-output name=registryServer::$(az acr list --query '[].loginServer' -o tsv | head -1)"
+          echo "::set-output name=registryUsername::${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}"
+          echo "::set-output name=registryPassword::${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}"
