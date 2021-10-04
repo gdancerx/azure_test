@@ -60,6 +60,6 @@ jobs:
             echo ${SECRETNAME}=${SECRET} >>secrets.env
           done
           ls -l
-          cat secrets.env
+          # cat secrets.env
           rm secrets.env
             
