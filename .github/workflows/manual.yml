@@ -49,3 +49,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           resource-group: ${{ steps.creds.outputs.resourceGroupName }}
           cluster-name: ${{ steps.creds.outputs.clusterName }}
+          
+      - name: Get secrets
+        run: |
+          az keyvault secret list --vault-name ${{ steps.creds.outputs.clusterName }}-${{ secrets.APP }} --query "[].id" -o tsv
