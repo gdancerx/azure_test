@@ -57,7 +57,8 @@ jobs:
           for SECRET in "${SECRETS[@]}"; do
             SECRETNAME=$(echo "$SECRET" | sed 's|.*/||')
             SECRET=$(az keyvault secret show --vault-name ${{ steps.creds.outputs.clusterName }}-${{ secrets.APP }} -n $SECRETNAME --query "value" -o tsv)
-            echo ${SECRETNAME}=${SECRET}
+            echo ${SECRETNAME}=${SECRET} >>secrets.env
           done
+          cat secrets.env
           rm secrets.env
             
