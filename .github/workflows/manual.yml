@@ -52,9 +52,12 @@ jobs:
           
       - name: Get secrets
         run: |
+          echo -ne > secrets.env
           SECRETS+=($(az keyvault secret list --vault-name ${{ steps.creds.outputs.clusterName }}-${{ secrets.APP }} --query "[].id" -o tsv))
           for SECRET in "${SECRETS[@]}"; do
             SECRETNAME=$(echo "$SECRET" | sed 's|.*/||')
             SECRET=$(az keyvault secret show --vault-name ${{ steps.creds.outputs.clusterName }}-${{ secrets.APP }} -n $SECRETNAME --query "value" -o tsv)
+            echo '${SECRETNAME}=${$SECRET}'
           done
+          rm secrets.env
             
