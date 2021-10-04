@@ -52,7 +52,7 @@ jobs:
           
       - name: Get secrets
         run: |
-          SECRETS+=($ (az keyvault secret list --vault-name ${{ steps.creds.outputs.clusterName }}-${{ secrets.APP }} --query "[].id" -o tsv))
+          SECRETS+=($(az keyvault secret list --vault-name ${{ steps.creds.outputs.clusterName }}-${{ secrets.APP }} --query "[].id" -o tsv))
           for SECRET in "${SECRETS[@]}"; do
             SECRETNAME=$(echo "$SECRET" | sed 's|.*/||')
             SECRET=$(az keyvault secret show --vault-name ${{ steps.creds.outputs.clusterName }}-${{ secrets.APP }} -n $SECRETNAME --query "value" -o tsv)
